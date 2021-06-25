@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gip.mapper.CustomerMapper">
+
+<select id="findAllCustomer" resultType="customer">
+    select *
+    from junjun.customer
+</select>
+    <select id="findAllCustomerByIf" resultType="customer">
+        select * from junjun.customer
+        <where>
+            <if test="customerId != null and customerId !=''">
+                and customer_id=#{customerId}
+            </if>
+            <if test="customerName != null and customerName !=''">
+                and customer_name like '%${customerName}%'
+            </if>
+            <if test="customerPhone != null and customerPhone!=''">
+                and customer_phone=#{customerPhone}
+            </if>
+        </where>
+    </select>
+
+</mapper>

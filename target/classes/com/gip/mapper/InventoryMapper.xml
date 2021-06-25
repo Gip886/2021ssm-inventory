@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gip.mapper.InventoryMapper">
+
+<select id="findInventoryByIf" parameterType="inventory" resultType="inventory">
+    select *
+    from junjun.inventory where product_id=#{productId} and storage_id=#{storageId}
+</select>
+    <update id="updateInventory" parameterType="inventory">
+        UPDATE junjun.inventory
+        set product_num=#{productNum}
+        WHERE product_id = #{productId} and storage_id=#{storageId}
+    </update>
+
+
+
+
+    <select id="findAllInventory"  resultType="inventory">
+        select *
+        from junjun.inventory
+                 left join junjun.`storage`
+                           on inventory.storage_id=storage.storage_id
+                 left join junjun.product
+                           on inventory.product_id=product.product_id
+                 left join junjun.dict
+                           on product.product_type=dict.dict_type_code and dict_type_name='商品类别'
+    </select>
+
+    <select id="findAllInventoryByIf" parameterType="inventory" resultType="inventory">
+        select *
+        from junjun.inventory
+        left join junjun.`storage`
+        on inventory.storage_id=storage.storage_id
+        left join junjun.product
+        on inventory.product_id=product.product_id
+        left join junjun.dict
+        on product.product_type=dict.dict_type_code and dict_type_name='商品类别'
+        <where>
+            <if test="productId != null and productId !=''">
+                and inventory.product_id=#{productId}
+            </if>
+            <if test="storageId != null and storageId!=''">
+                and inventory.storage_id=#{storageId}
+            </if>
+        </where>
+    </select>
+
+</mapper>
